@@ -14,8 +14,16 @@ public class MainMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
         final Intent toMessaging = new Intent(this, MessagingActivity.class);
 
-        Button startButton = (Button) findViewById(R.id.start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
+        Button maleStartButton = (Button) findViewById(R.id.male_start_button);
+        maleStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(toMessaging);
+            }
+        });
+
+        Button femaleStartButton = (Button) findViewById(R.id.female_start_button);
+        femaleStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(toMessaging);
