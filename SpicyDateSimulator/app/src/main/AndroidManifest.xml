@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MessagingActivity" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
