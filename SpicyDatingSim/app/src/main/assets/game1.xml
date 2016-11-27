@@ -2,7 +2,7 @@
 <game id="com.example.evan.funGame" name="Spicy Dating Sim 2016" imgid="" description="The Spiciest">
     <nodes>
     <node start="true" id="node1">
-        <response default="true">"Hi there!"</response>
+        <response default="true">Hi there!</response>
         <choice goTo="node2" setFlag="asshole">Shut Up</choice>
         <choice goTo="node2">Hey can't talk now, I'll text you later!</choice>
         <choice goTo="node3" setFlag="nice">Hello beautiful!</choice>

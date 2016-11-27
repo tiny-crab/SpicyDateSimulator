@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            SDSGame game = new SDSGame(new InputStreamReader(getAssets().open("game1.xml")));
+            SDSGame game = new SDSGame(new InputStreamReader(getAssets().open("game1.xml")), null);
+            int a = 2;
         }
         catch(IOException e) {
             e.printStackTrace();

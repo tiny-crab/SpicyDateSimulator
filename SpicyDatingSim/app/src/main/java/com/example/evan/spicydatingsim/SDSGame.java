@@ -1,12 +1,13 @@
 package com.example.evan.spicydatingsim;
 
+import android.util.Log;
+import android.util.Pair;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
 
@@ -21,11 +22,65 @@ public class SDSGame {
     private String desc;
     private String imgid;
     private HashMap<String, GameNode> gameMap;
+    private GameNode curNode = null;
     private SDSGameSave curSave = null;
 
-    public SDSGame(Reader fileData) {
+    public SDSGame(Reader fileData, SDSGameSave save) {
+        gameMap = new HashMap<>();
         createFromStream(fileData);
+        if (save == null) {
+            curSave = new SDSGameSave();
+        }
+        else {
+            curSave = save;
+        }
     }
+
+    public String getResponse() {
+        if (curNode != null) {
+            return curNode.getResponse(curSave.getFlagMap());
+        }
+        else {
+            Log.d("SDSGame", "No start node given");
+            return "";
+        }
+    }
+
+    public String[] getChoices() {
+        if (curNode != null) {
+            return curNode.getChoices(curSave.getFlagMap());
+        }
+        else {
+            Log.d("SDSGame", "No start node given");
+            return new String[]{""};
+        }
+    }
+
+
+    public boolean makeChoice(int index) {
+        Pair<String, String> newNodeInfo = curNode.makeChoice(curSave.getFlagMap(), index);
+        String newNodeId = newNodeInfo.first;
+        String newFlag = newNodeInfo.second;
+        if (curSave != null) {
+            curSave.setFlag(newFlag);
+        }
+        if (newNodeId.equals(GOTO_END)) {
+            curNode = null;
+            return false;
+        }
+        else {
+            curNode = gameMap.get(newNodeId);
+            if (curNode == null) {
+                Log.e("SDSGame", "Error: No node with id " + newNodeId + " found");
+            }
+            else if (curSave != null) {
+                curSave.updateCurNode(curNode.getId());
+            }
+            return true;
+        }
+    }
+
+    // private stuff below this
 
     private void createFromStream(Reader fileData) {
         try {
@@ -39,13 +94,45 @@ public class SDSGame {
             desc = parser.getAttributeValue(null, GAME_DESC);
             gameName = parser.getAttributeValue(null, GAME_NAME);
             id = parser.getAttributeValue(null, GAME_ID);
+            imgid = parser.getAttributeValue(null, GAME_IMG_ID);
+            parser.next();
             parser.next();
             // make sure the next one is the <nodes> tag
             parser.require(XmlPullParser.START_TAG, null, NODES_TAG);
-            parser.next();
-            while (parser.getEventType() == XmlPullParser.START_TAG) {
+            parser.nextTag();
+            while (parser.getEventType() == XmlPullParser.START_TAG && parser.getName().equals(NODE_TAG)) {
                 parser.require(XmlPullParser.START_TAG, null, NODE_TAG);
-                // Currently working here
+                GameNode newNode = new GameNode(parser.getAttributeValue(null, NODE_ID));
+                if (parser.getAttributeValue(null, NODE_START) != null) {
+                    curNode = newNode;
+                }
+                parser.nextTag();
+                while(parser.getName().equals(RESPONSE_TAG)) {
+                    String showIf = parser.getAttributeValue(null, NODE_SHOWIF);
+                    boolean def = parser.getAttributeValue(null, NODE_DEFAULT) != null;
+                    parser.next();
+                    parser.require(XmlPullParser.TEXT, null, null);
+                    String text = parser.getText();
+                    newNode.addResponse(text, showIf, def);
+                    parser.nextTag();
+                    parser.require(XmlPullParser.END_TAG, null, RESPONSE_TAG);
+                    parser.nextTag();
+                }
+                while(parser.getName().equals(CHOICE_TAG)) {
+                    String showIf = parser.getAttributeValue(null, NODE_SHOWIF);
+                    String goTo = parser.getAttributeValue(null, NODE_GOTO);
+                    String flag = parser.getAttributeValue(null, NODE_SETFLAG);
+                    parser.next();
+                    parser.require(XmlPullParser.TEXT, null, null);
+                    String text = parser.getText();
+                    newNode.addChoice(text, goTo, showIf, flag);
+                    parser.nextTag();
+                    parser.require(XmlPullParser.END_TAG, null, CHOICE_TAG);
+                    parser.nextTag();
+                }
+                parser.require(XmlPullParser.END_TAG, null, NODE_TAG);
+                gameMap.put(newNode.getId(), newNode);
+                parser.nextTag();
             }
         }
         catch (XmlPullParserException e) {
@@ -79,11 +166,5 @@ public class SDSGame {
 
     private static final String GOTO_END = "_end";
 
-    private class GameNode {
-        private String id;
 
-        public GameNode(String id) {
-            this.id = id;
-        }
-    }
 }
