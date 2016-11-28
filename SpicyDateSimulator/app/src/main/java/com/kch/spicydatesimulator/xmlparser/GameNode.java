@@ -1,4 +1,4 @@
-package com.kch.spicydatesimulator;
+package com.kch.spicydatesimulator.xmlparser;
 
 import android.util.Log;
 import android.util.Pair;

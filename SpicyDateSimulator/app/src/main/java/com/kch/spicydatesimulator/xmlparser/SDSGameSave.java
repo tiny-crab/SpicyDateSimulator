@@ -1,11 +1,8 @@
-package com.kch.spicydatesimulator;
+package com.kch.spicydatesimulator.xmlparser;
 
 import java.util.HashMap;
 import java.util.Set;
 
-/**
- * Created by evan on 11/26/2016.
- */
 
 public class SDSGameSave {
     private HashMap<String, Boolean> flags;
