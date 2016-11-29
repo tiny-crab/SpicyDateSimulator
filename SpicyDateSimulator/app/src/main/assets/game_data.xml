@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<game id="com.kch.spicydatesimulator" name="Spicy Dating Sim 2016" imgid="" description="The Spiciest">
+    <nodes>
+        <node start="true" id="node1">
+            <response default="true">Hi there!</response>
+            <choice goTo="node2" setFlag="asshole">Shut Up</choice>
+            <choice goTo="node2">Hey! What's up? Are you doing okay?</choice>
+            <choice goTo="node2" setFlag="nice">Hello beautiful!</choice>
+            <choice goTo="node2">Hi</choice>
+        </node>
+        <node id="node2">
+            <response showIf="asshole">Ummm... bye</response>
+            <response default="true">Oh Okay! I'll talk to you later!</response>
+            <choice goTo="_end">Ya see ya</choice>
+            <choice goTo="_end">Don't Reply</choice>
+            <choice goTo="_end">Byeee</choice>
+            <choice goTo="_end">You're the worst</choice>
+        </node>
+    </nodes>
+</game>

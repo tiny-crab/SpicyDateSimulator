@@ -30,12 +30,14 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="option 1"/>
+                android:text="option 1"
+                android:id="@+id/option1"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="option 2"/>
+                android:text="option 2"
+                android:id="@+id/option2"/>
 
         </LinearLayout>
 
@@ -48,12 +50,14 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="option 3"/>
+                android:text="option 3"
+                android:id="@+id/option3"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="option 4"/>
+                android:text="option 4"
+                android:id="@+id/option4"/>
 
         </LinearLayout>
 

@@ -32,8 +32,7 @@ public class GameNode {
                 else
                     continue;
             }
-            if (r == null || !r.isDefault())
-                def = r;
+            def = r;
         }
         if (def == null)
             return "";
@@ -48,7 +47,7 @@ public class GameNode {
             }
             res.add(c.text());
         }
-        return (String[])res.toArray();
+        return res.toArray(new String[0]);
     }
 
     public Pair<String, String> makeChoice(HashMap<String, Boolean> flags, int n) {

@@ -42,7 +42,7 @@ public class SDSGame {
         }
         else {
             Log.d("SDSGame", "No start node given");
-            return "";
+            return null;
         }
     }
 
@@ -52,7 +52,7 @@ public class SDSGame {
         }
         else {
             Log.d("SDSGame", "No start node given");
-            return new String[]{""};
+            return null;
         }
     }
 
