@@ -64,7 +64,7 @@ public class SDSGame {
         if (curSave != null) {
             curSave.setFlag(newFlag);
         }
-        if (newNodeId.equals(GOTO_END)) {
+        if (newNodeId == null) {
             curNode = null;
             return false;
         }

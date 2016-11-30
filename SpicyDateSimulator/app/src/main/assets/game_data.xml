@@ -33,8 +33,8 @@
             <response>Wow thanks. Are you up to anything cool?</response>
             <choice goto="_end" setFlag="aggressive">ye its really cool since you're not here</choice>
             <choice goto="_end" setFlag="nice">Haha jk! I'm just working on a project for my mobile development course.</choice>
-            <choice goto="" setFlag="flirtatious">I would be if you were here ;)</choice>
-            <choice goto="_end" setFlag="awkward"></choice>
+            <choice goto="_end" setFlag="flirtatious">I would be if you were here ;)</choice>
+            <choice goto="_end" setFlag="awkward">Um sorry - it was a bad joke</choice>
         </node>
         <node id="node6">
             <response>Yeah, what kind of food do you want?</response>
@@ -63,6 +63,14 @@
             <choice goto="node6" setFlag="nice">Nah, want to go to dinner?</choice>
             <choice goto="node6" setFlag="flirtatious">I will be if you want to hang out ;)</choice>
             <choice goto="_end" setFlag="awkward"></choice>
+        </node>
+
+        <node id="">
+            <response></response>
+            <choice goto="" setFlag="aggressive"></choice>
+            <choice goto="" setFlag="nice"></choice>
+            <choice goto="" setFlag="flirtatious"></choice>
+            <choice goto="" setFlag="awkward"></choice>
         </node>
     </nodes>
 </game>
