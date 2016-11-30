@@ -17,50 +17,10 @@
         android:id="@+id/messaging_list_view">
     </ListView>
 
-    <LinearLayout
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="option 1"
-                android:id="@+id/option1"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="option 2"
-                android:id="@+id/option2"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="option 3"
-                android:id="@+id/option3"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="option 4"
-                android:id="@+id/option4"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="374dp"
+        android:id="@+id/choices_list_view">
+    </ListView>
 
 </LinearLayout>

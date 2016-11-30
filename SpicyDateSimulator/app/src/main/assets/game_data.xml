@@ -3,18 +3,66 @@
     <nodes>
         <node start="true" id="node1">
             <response default="true">Hi there!</response>
-            <choice goTo="node2" setFlag="asshole">Shut Up</choice>
-            <choice goTo="node2">Hey! What's up? Are you doing okay?</choice>
-            <choice goTo="node2" setFlag="nice">Hello beautiful!</choice>
-            <choice goTo="node2">Hi</choice>
+            <choice goTo="node2" setFlag="aggressive">u busy tonite</choice>
+            <choice goTo="node3" setFlag="nice">Hello! How are you?</choice>
+            <choice goTo="node4" setFlag="flirtatious">Oh look who it is ;)</choice>
+            <choice goTo="_end" setFlag="awkward">&lt;don't respond&gt;</choice>
         </node>
         <node id="node2">
-            <response showIf="asshole">Ummm... bye</response>
-            <response default="true">Oh Okay! I'll talk to you later!</response>
-            <choice goTo="_end">Ya see ya</choice>
-            <choice goTo="_end">Don't Reply</choice>
-            <choice goTo="_end">Byeee</choice>
-            <choice goTo="_end">You're the worst</choice>
+            <response default="true">Um... I don't think so!</response>
+            <choice goTo="node5" setFlag="aggressive">haha wow you loser</choice>
+            <choice goTo="node6" setFlag="nice">Do you want to go get dinner?</choice>
+            <choice goTo="node7" setFlag="flirtatious">How about you and I spend some time together tonight?</choice>
+            <choice goTo="node8" setFlag="awkward">Oh that sucks. I'm not doing anything either.</choice>
+        </node>
+        <node id="node3">
+            <response>I'm good, what about you?</response>
+            <choice goto="_end" setFlag="aggressive">im doing great</choice>
+            <choice goto="node9" setFlag="nice">I'm pretty good, just programming :)</choice>
+            <choice goto="node10" setFlag="flirtatious">Loads better, now that you're talking to me ;)</choice>
+            <choice goto="_end" setFlag="awkward">I'm sick, I had diarrhea like three times this afternoon.</choice>
+        </node>
+        <node id="node4">
+            <response>Haha what's up?</response>
+            <choice goto="_end" setFlag="aggressive">not much</choice>
+            <choice goto="node11" setFlag="nice">I'm working on some homework. Are you free next weekend?</choice>
+            <choice goto="_end" setFlag="flirtatious">Just thinking boutchu ;)</choice>
+            <choice goto="node12" setFlag="awkward">&lt;don't respond&gt;</choice>
+        </node>
+        <node id="node5">
+            <response>Wow thanks. Are you up to anything cool?</response>
+            <choice goto="_end" setFlag="aggressive">ye its really cool since you're not here</choice>
+            <choice goto="_end" setFlag="nice">Haha jk! I'm just working on a project for my mobile development course.</choice>
+            <choice goto="" setFlag="flirtatious">I would be if you were here ;)</choice>
+            <choice goto="_end" setFlag="awkward"></choice>
+        </node>
+        <node id="node6">
+            <response>Yeah, what kind of food do you want?</response>
+            <choice goto="_end" setFlag="aggressive">barbecue</choice>
+            <choice goto="_end" setFlag="nice">How about you choose?</choice>
+            <choice goto="_end" setFlag="flirtatious">I don't care as long as I can look at you from across the table ;)</choice>
+            <choice goto="_end" setFlag="awkward">Um idk, what do you like?</choice>
+        </node>
+        <node id="node7">
+            <response>That sounds good (:</response>
+            <choice goto="" setFlag="aggressive">netflix and chill?</choice>
+            <choice goto="" setFlag="nice">Want to go to dinner?</choice>
+            <choice goto="" setFlag="flirtatious">How about a romantic dinner? ;)</choice>
+            <choice goto="" setFlag="awkward">I can't really think of anything to do...</choice>
+        </node>
+        <node id="node8">
+            <response>Darn. Do you want to get food tonight?</response>
+            <choice goto="_end" setFlag="aggressive">nah</choice>
+            <choice goto="node6" setFlag="nice">Yeah, are you hungry now?</choice>
+            <choice goto="node6" setFlag="flirtatious">Only if you want to ;)</choice>
+            <choice goto="_end" setFlag="awkward">Um how about next week?</choice>
+        </node>
+        <node id="node9">
+            <response>That sounds boring lol. You busy tonight?</response>
+            <choice goto="_end" setFlag="aggressive">yep haha</choice>
+            <choice goto="node6" setFlag="nice">Nah, want to go to dinner?</choice>
+            <choice goto="node6" setFlag="flirtatious">I will be if you want to hang out ;)</choice>
+            <choice goto="_end" setFlag="awkward"></choice>
         </node>
     </nodes>
 </game>

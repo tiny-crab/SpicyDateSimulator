@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.kch.spicydatesimulator.xmlparser.SDSGame;
 import com.kch.spicydatesimulator.xmlparser.SDSGameSave;
@@ -26,9 +28,10 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
     private String response;
     private String[] choices;
 
-    private Button option1Button, option2Button, option3Button, option4Button;
     private ListView messagesList;
+    private ListView choicesList;
     ArrayAdapter<String> messageToPush;
+    ArrayAdapter<String> choiceToPush;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +49,12 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
         messageToPush = new ArrayAdapter<>(currentActivity, android.R.layout.simple_list_item_1);
         messagesList.setAdapter(messageToPush);
 
+        choicesList = (ListView) findViewById(R.id.choices_list_view);
+        choiceToPush = new ArrayAdapter<>(currentActivity, android.R.layout.simple_list_item_1);
+        choicesList.setAdapter(choiceToPush);
+        choicesList.setOnItemClickListener(new choiceOnItemClickListener());
+
         game = new SDSGame(xmlReader, gameSave);
-
-        option1Button = (Button) findViewById(R.id.option1);
-        option2Button = (Button) findViewById(R.id.option2);
-        option3Button = (Button) findViewById(R.id.option3);
-        option4Button = (Button) findViewById(R.id.option4);
-
-        option1Button.setOnClickListener(new choiceOnClickListener(0));
-        option2Button.setOnClickListener(new choiceOnClickListener(1));
-        option3Button.setOnClickListener(new choiceOnClickListener(2));
-        option4Button.setOnClickListener(new choiceOnClickListener(3));
 
         updateScreen();
     }
@@ -81,6 +79,7 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
 
     private void updateScreen() {
         response = game.getResponse();
+        //when response is null, we've reached the end of the game
         if(response == null) {
             finish();
         } else {
@@ -88,35 +87,29 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
             messageToPush.notifyDataSetChanged();
         }
         choices = game.getChoices();
-        //reached the end of the game
+        //when choices are null, we've reached the end of the game
         if(choices == null) {
             finish();
         } else {
-            option1Button.setText(choices[0]);
-            option2Button.setText(choices[1]);
-            option3Button.setText(choices[2]);
-            option4Button.setText(choices[3]);
+            choiceToPush.clear();
+            for(String choice : choices) {
+                choiceToPush.add(choice);
+            }
+            choiceToPush.notifyDataSetChanged();
         }
 
 
     }
 
-    private class choiceOnClickListener implements View.OnClickListener{
-
-        private int choiceIndex;
-
-        choiceOnClickListener(int choiceIndex) {
-            this.choiceIndex = choiceIndex;
-        }
+    private class choiceOnItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
-        public void onClick(View v) {
-            game.makeChoice(choiceIndex);
-
-            messageToPush.add(choices[choiceIndex]);
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            game.makeChoice(position);
+            messageToPush.add(choices[position]);
             messageToPush.notifyDataSetChanged();
-
             updateScreen();
         }
+
     }
 }
