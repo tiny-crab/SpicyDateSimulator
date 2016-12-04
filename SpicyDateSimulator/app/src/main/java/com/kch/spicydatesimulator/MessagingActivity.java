@@ -1,9 +1,7 @@
 package com.kch.spicydatesimulator;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.kch.spicydatesimulator.xmlparser.GameNode;
 import com.kch.spicydatesimulator.xmlparser.SDSGame;
 import com.kch.spicydatesimulator.xmlparser.SDSGameSave;
 
@@ -108,6 +104,10 @@ public class MessagingActivity extends AppCompatActivity {
 
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public DialogListener getDialogListener() {
         return dialogListener;
     }
@@ -131,10 +131,14 @@ public class MessagingActivity extends AppCompatActivity {
                 // do nothing, the user wants to continue playing
             } else {
                 game.restart();
+                //resetting the adapters to have nothing inside of them
                 messageToPush.clear();
                 choiceToPush.clear();
+                //resetting views to be attached to empty adapters
                 messagesList.setAdapter(messageToPush);
                 choicesList.setAdapter(choiceToPush);
+                //resetting score
+                score = 0;
                 updateScreen();
             }
         }
