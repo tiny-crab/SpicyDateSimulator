@@ -2,6 +2,10 @@ package com.kch.spicydatesimulator;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +24,17 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 public class MessagingActivity extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
+    private ServiceConnection mConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
 
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+
+        }
+    };
     private SDSGameSave gameSave = null;
     private SDSGame game = null;
     private Activity currentActivity = this;
@@ -57,6 +71,20 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
         game = new SDSGame(xmlReader, gameSave);
 
         updateScreen();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent i = new Intent(this, MediaService.class);
+        bindService(i, mConn, BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        unbindService(mConn);
+        super.onStop();
     }
 
     @Override
