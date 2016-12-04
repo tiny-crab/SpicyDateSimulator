@@ -1,6 +1,5 @@
 package com.kch.spicydatesimulator;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,6 +9,8 @@ import android.os.Bundle;
 
 public class EndGameDialog extends DialogFragment {
 
+    private int score;
+
     MessagingActivity.DialogListener mListener;
 
     @Override
@@ -17,7 +18,9 @@ public class EndGameDialog extends DialogFragment {
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.end_game_notice)
+        String message = getActivity().getResources().getString(R.string.end_game_notice)
+                + " You scored " + Integer.toString(score) + " points!";
+        builder.setMessage(message)
                 .setPositiveButton(R.string.end_game_quit, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDialogPositiveClick(EndGameDialog.this);
@@ -38,6 +41,7 @@ public class EndGameDialog extends DialogFragment {
         MessagingActivity currentActivity = (MessagingActivity) getActivity();
         try {
             mListener = currentActivity.getDialogListener();
+            score = currentActivity.getScore();
         } catch (ClassCastException classCast) {
             throw new ClassCastException(currentActivity.toString()
                     + " must implement ConfirmationDialogListener");

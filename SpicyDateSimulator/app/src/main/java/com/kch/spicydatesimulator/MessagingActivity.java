@@ -132,6 +132,10 @@ public class MessagingActivity extends AppCompatActivity {
 
     }
 
+    public int getScore() {
+        return score;
+    }
+
     public DialogListener getDialogListener() {
         return dialogListener;
     }
@@ -155,10 +159,14 @@ public class MessagingActivity extends AppCompatActivity {
                 // do nothing, the user wants to continue playing
             } else {
                 game.restart();
+                //resetting the adapters to have nothing inside of them
                 messageToPush.clear();
                 choiceToPush.clear();
+                //resetting views to be attached to empty adapters
                 messagesList.setAdapter(messageToPush);
                 choicesList.setAdapter(choiceToPush);
+                //resetting score
+                score = 0;
                 updateScreen();
             }
         }
