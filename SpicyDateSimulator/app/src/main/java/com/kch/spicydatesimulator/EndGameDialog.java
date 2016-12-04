@@ -10,25 +10,20 @@ import android.os.Bundle;
 
 public class EndGameDialog extends DialogFragment {
 
-    public interface EndGameDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
-    }
-
-    ConfirmationDialog.ConfirmationDialogListener mListener;
+    MessagingActivity.DialogListener mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(R.string.dialog_exit_question)
-                .setPositiveButton(R.string.dialog_exit_confirmation, new DialogInterface.OnClickListener() {
+        builder.setMessage(R.string.end_game_notice)
+                .setPositiveButton(R.string.end_game_quit, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDialogPositiveClick(EndGameDialog.this);
                     }
                 })
-                .setNegativeButton(R.string.dialog_exit_cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.end_game_again, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         mListener.onDialogNegativeClick(EndGameDialog.this);
                     }
@@ -40,9 +35,9 @@ public class EndGameDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Activity currentActivity = getActivity();
+        MessagingActivity currentActivity = (MessagingActivity) getActivity();
         try {
-            //mListener = (EndGameDialog.EndGameDialogListener) currentActivity;
+            mListener = currentActivity.getDialogListener();
         } catch (ClassCastException classCast) {
             throw new ClassCastException(currentActivity.toString()
                     + " must implement ConfirmationDialogListener");
