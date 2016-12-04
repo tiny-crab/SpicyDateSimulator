@@ -64,6 +64,13 @@
             <choice goto="node6" setFlag="flirtatious">I will be if you want to hang out ;)</choice>
             <choice goto="_end" setFlag="awkward"></choice>
         </node>
+        <node id="node10">
+            <response>Oh yeah? ;) </response>
+            <choice goto="" setFlag="aggressive"></choice>
+            <choice goto="" setFlag="nice"></choice>
+            <choice goto="" setFlag="flirtatious"></choice>
+            <choice goto="" setFlag="awkward"></choice>
+        </node>
 
         <node id="">
             <response></response>
