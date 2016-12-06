@@ -19,7 +19,7 @@
             <response>I'm good, what about you?</response>
             <choice goto="_end" setFlag="aggressive">im doing great</choice>
             <choice goto="node9" setFlag="nice">I'm pretty good, just programming :)</choice>
-            <choice goto="node10" setFlag="flirtatious">Loads better, now that you're talking to me ;)</choice>
+            <choice goto="node4" setFlag="flirtatious">Loads better, now that you're talking to me ;)</choice>
             <choice goto="_end" setFlag="awkward">I'm sick, I had diarrhea like three times this afternoon.</choice>
         </node>
         <node id="node4">
@@ -45,10 +45,10 @@
         </node>
         <node id="node7">
             <response>That sounds good (:</response>
-            <choice goto="" setFlag="aggressive">netflix and chill?</choice>
-            <choice goto="" setFlag="nice">Want to go to dinner?</choice>
-            <choice goto="" setFlag="flirtatious">How about a romantic dinner? ;)</choice>
-            <choice goto="" setFlag="awkward">I can't really think of anything to do...</choice>
+            <choice goto="_end" setFlag="aggressive">netflix and chill?</choice>
+            <choice goto="_end" setFlag="nice">Want to go to dinner?</choice>
+            <choice goto="_end" setFlag="flirtatious">How about a romantic dinner? ;)</choice>
+            <choice goto="_end" setFlag="awkward">I can't really think of anything to do...</choice>
         </node>
         <node id="node8">
             <response>Darn. Do you want to get food tonight?</response>

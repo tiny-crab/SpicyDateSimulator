@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.kch.spicydatesimulator.xmlparser.MessageListAdapter;
 import com.kch.spicydatesimulator.xmlparser.SDSGame;
 import com.kch.spicydatesimulator.xmlparser.SDSGameSave;
 
@@ -30,7 +31,7 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
 
     private ListView messagesList;
     private ListView choicesList;
-    ArrayAdapter<String> messageToPush;
+    MessageListAdapter messageToPush;
     ArrayAdapter<String> choiceToPush;
 
     @Override
@@ -46,7 +47,7 @@ public class MessagingActivity extends AppCompatActivity implements Confirmation
         }
 
         messagesList = (ListView) findViewById(R.id.messaging_list_view);
-        messageToPush = new ArrayAdapter<>(currentActivity, android.R.layout.simple_list_item_1);
+        messageToPush = new MessageListAdapter(currentActivity);
         messagesList.setAdapter(messageToPush);
 
         choicesList = (ListView) findViewById(R.id.choices_list_view);
