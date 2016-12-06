@@ -23,6 +23,7 @@ public class SDSGame {
     private String imgid;
     private HashMap<String, GameNode> gameMap;
     private GameNode curNode = null;
+    private GameNode startingNode = null;
     private SDSGameSave curSave = null;
 
     public SDSGame(Reader fileData, SDSGameSave save) {
@@ -34,6 +35,7 @@ public class SDSGame {
         else {
             curSave = save;
         }
+        startingNode = curNode;
     }
 
     public String getResponse() {
@@ -78,6 +80,10 @@ public class SDSGame {
             }
             return true;
         }
+    }
+
+    public void restart() {
+        curNode = startingNode;
     }
 
     // private stuff below this

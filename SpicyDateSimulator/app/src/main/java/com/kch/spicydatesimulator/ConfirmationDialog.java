@@ -1,6 +1,5 @@
 package com.kch.spicydatesimulator;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,12 +9,7 @@ import android.os.Bundle;
 
 public class ConfirmationDialog extends DialogFragment {
 
-    public interface ConfirmationDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
-        public void onDialogNegativeClick(DialogFragment dialog);
-    }
-
-    ConfirmationDialogListener mListener;
+    MessagingActivity.DialogListener mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -40,9 +34,9 @@ public class ConfirmationDialog extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Activity currentActivity = getActivity();
+        MessagingActivity currentActivity = (MessagingActivity) getActivity();
         try {
-            mListener = (ConfirmationDialogListener) currentActivity;
+            mListener = currentActivity.getDialogListener();
         } catch (ClassCastException classCast) {
             throw new ClassCastException(currentActivity.toString()
                     + " must implement ConfirmationDialogListener");

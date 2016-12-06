@@ -10,4 +10,8 @@
     <string name="dialog_exit_confirmation">Quit Game</string>
     <string name="dialog_exit_cancel">Keep Playing!</string>
     <string name="loading">Loading Games...</string>
+    <string name="end_game_notice">You lost! Play again?</string>
+    <string name="end_game_quit">Quit Game</string>
+    <string name="end_game_again">Try Again!</string>
+
 </resources>

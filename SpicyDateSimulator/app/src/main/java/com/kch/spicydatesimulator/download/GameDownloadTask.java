@@ -20,7 +20,7 @@ public class GameDownloadTask implements Callable<String> {
     public String call() throws Exception {
         File gameFile = new File(dirPath + "/" + gameName);
         if (gameFile.exists()) { // no connection and no local, abort!
-            return
+            return "a";
         }
         return null;
     }
