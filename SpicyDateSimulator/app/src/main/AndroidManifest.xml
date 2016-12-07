@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kch.spicydatesimulator">
+    <uses-permission android:name="android.permission.INTERNET" />
 // App Icon used with FlatIcon Free License (Free usage with attribution) from Pixel Buddha at Flaticon.com
     <application
         android:allowBackup="true"

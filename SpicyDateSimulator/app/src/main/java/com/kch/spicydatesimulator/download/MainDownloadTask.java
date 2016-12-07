@@ -6,6 +6,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.StringBuilderPrinter;
 
+import com.kch.spicydatesimulator.MainMenuActivity;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,15 +21,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 
-public class MainDownloadTask implements Callable<ArrayList<Pair<String, String>>> {
+public class MainDownloadTask implements Runnable {
 
     private static final String INDEX_URL = "http://wiederspane1.cs.spu.edu/SpicyDateSimGames";
     private static final String INDEX_FILE = "/gamesList.txt";
-    private Context context;
+    private MainMenuActivity context;
 
-    public MainDownloadTask(Context context) {
+    public MainDownloadTask(MainMenuActivity context) {
         this.context = context;
     }
 
@@ -37,7 +46,7 @@ public class MainDownloadTask implements Callable<ArrayList<Pair<String, String>
      * @return An ArrayList containing pairs where First is the name of the game and Second is the file path containing its data
      */
     @Override
-    public ArrayList<Pair<String,String> > call() {
+    public void run() {
         try {
             URL indexUrl = new URL(INDEX_URL + INDEX_FILE);
             HttpURLConnection con = (HttpURLConnection) indexUrl.openConnection();
@@ -49,10 +58,14 @@ public class MainDownloadTask implements Callable<ArrayList<Pair<String, String>
             if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 InputStream in = con.getInputStream();
                 // download into byte[] buffer
-                byte[] buffer = new byte[4096];
-                while (in.read(buffer) != -1) {} // read download into buffer
+                byte[] buffer = new byte[2048];
+                int bufLen = 0; // keep track of how much data we downloaded
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    bufLen += read;
+                } // read download into buffer
                  // read buffer into string array split by newlines
-                lines = new String(buffer).split("\\r\\n|\\r|\\n");
+                lines = new String(buffer,0,bufLen).split("\\r\\n|\\r|\\n");
                 FileOutputStream indexFile = new FileOutputStream(context.getFilesDir()+ INDEX_FILE);
                 // and also into a local copy for later offline runs
                 indexFile.write(buffer);
@@ -62,7 +75,7 @@ public class MainDownloadTask implements Callable<ArrayList<Pair<String, String>
             else { // otherwise try to load it from previous save
                 File indexFile = new File(context.getFilesDir() + INDEX_FILE);
                 if (!indexFile.exists()) { // no connection and no local, abort!
-                    return null;
+                    return;
                 }
                 // this is actually a solution I found
                 // like Oracle was looking at their libraries and thought
@@ -82,10 +95,28 @@ public class MainDownloadTask implements Callable<ArrayList<Pair<String, String>
                 lines = (String[]) lineList.toArray();
                 br.close();
             }
-            for (String l : lines) {
+            con.disconnect();
+            ArrayList<Callable<Pair<String,String>>> tasks = new ArrayList<>();
+            GameDownloadTask.DIR = context.getFilesDir().getPath();
+            for (int i = 0; i < lines.length; i++) { // were skipping the last one because its full of junk data
                 // file name in [0], name in [1]
-                String[] game = l.split(" ", 1);
-
+                String l = lines[i];
+                String[] game = l.split(" ", 2);
+                tasks.add(new GameDownloadTask(context.getFilesDir().getPath(), game[0], game[1]));
+            }
+            // Triple templates, baby
+            List<Future<Pair<String,String>>> games = Executors.newCachedThreadPool().invokeAll(tasks);
+            ArrayList<Pair<String,String>> res = new ArrayList<>(games.size());
+            try {
+                // process the futures
+                for (Future<Pair<String, String>> g : games) {
+                    res.add(g.get());
+                }
+                if (context.isRunning())
+                    context.fillGameDropDown(res); // update main activity with list of games
+            }
+            catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }
         catch (MalformedURLException e) {
@@ -96,8 +127,9 @@ public class MainDownloadTask implements Callable<ArrayList<Pair<String, String>
             Log.d("Download", "IOException");
             e.printStackTrace();
         }
-        ArrayList<Pair<String,String>> arr = new ArrayList<>();
-
-        return arr;
+        catch (InterruptedException e) {
+            Log.d("Download", "InterruptedException");
+            e.printStackTrace();
+        }
     }
 }

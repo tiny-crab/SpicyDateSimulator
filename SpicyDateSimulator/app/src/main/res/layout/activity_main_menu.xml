@@ -28,7 +28,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="117dp"
         android:layout_below="@+id/title_text"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:enabled="false" />
 
     <Button
         android:id="@+id/female_start_button"
@@ -37,7 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
         android:layout_below="@+id/male_start_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:enabled="false" />
 
     <Spinner
         android:layout_width="match_parent"
@@ -51,8 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gameSelectText"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="34dp"
         android:layout_below="@+id/title_text"
-        android:layout_toStartOf="@+id/male_start_button" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
