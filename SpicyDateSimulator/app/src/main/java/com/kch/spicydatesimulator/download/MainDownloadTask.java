@@ -2,6 +2,8 @@ package com.kch.spicydatesimulator.download;
 
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.util.Pair;
 import android.util.StringBuilderPrinter;
@@ -41,17 +43,38 @@ public class MainDownloadTask implements Runnable {
     }
 
     /**
+     * Helper function to test for internet connectivity
+     * @return if the app has an internet connection
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    /**
      * Downloads the game list file from the server, then proceeds to download all of the games found in the index
      * If a game has been downloaded previously, it will fetch it from the file system instead of downloading it again
      * @return An ArrayList containing pairs where First is the name of the game and Second is the file path containing its data
      */
     @Override
     public void run() {
+        if (!isOnline()) {
+            if (context.isRunning())
+                context.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        context.fillGameDropDown(null);
+                    }
+                });
+            return;
+        }
         try {
             URL indexUrl = new URL(INDEX_URL + INDEX_FILE);
             HttpURLConnection con = (HttpURLConnection) indexUrl.openConnection();
-            con.setReadTimeout(10000); // 10s read timeout
-            con.setConnectTimeout(15000); // 15s connect timeout
+            con.setReadTimeout(3000);
+            con.setConnectTimeout(3000);
             con.connect();
             String[] lines = {};
             // if the connection is good
@@ -106,14 +129,20 @@ public class MainDownloadTask implements Runnable {
             }
             // Triple templates, baby
             List<Future<Pair<String,String>>> games = Executors.newCachedThreadPool().invokeAll(tasks);
-            ArrayList<Pair<String,String>> res = new ArrayList<>(games.size());
+            final ArrayList<Pair<String,String>> res = new ArrayList<>(games.size());
             try {
                 // process the futures
                 for (Future<Pair<String, String>> g : games) {
                     res.add(g.get());
                 }
-                if (context.isRunning())
-                    context.fillGameDropDown(res); // update main activity with list of games
+                if (context.isRunning()) {
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            context.fillGameDropDown(res);
+                        }
+                    });
+                }
             }
             catch (ExecutionException e) {
                 e.printStackTrace();

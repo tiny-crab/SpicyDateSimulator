@@ -15,5 +15,6 @@
     <string name="end_game_notice">You lost! Play again?</string>
     <string name="end_game_quit">Quit Game</string>
     <string name="end_game_again">Try Again!</string>
+    <string name="no_games_dialog">No games found, please check you internet connection</string>
 
 </resources>

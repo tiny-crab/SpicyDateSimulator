@@ -40,8 +40,8 @@ public class GameDownloadTask implements Callable<Pair<String,String>> {
         try {
             URL indexUrl = new URL(INDEX_URL + "/" + this.gameFile);
             HttpURLConnection con = (HttpURLConnection) indexUrl.openConnection();
-            con.setReadTimeout(10000); // 10s read timeout
-            con.setConnectTimeout(15000); // 15s connect timeout
+            con.setReadTimeout(3000);
+            con.setConnectTimeout(3000);
             con.connect();
 
             if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {

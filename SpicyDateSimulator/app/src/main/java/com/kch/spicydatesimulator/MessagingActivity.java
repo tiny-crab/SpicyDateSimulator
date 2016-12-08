@@ -18,6 +18,7 @@ import com.kch.spicydatesimulator.xmlparser.MessageListAdapter;
 import com.kch.spicydatesimulator.xmlparser.SDSGame;
 import com.kch.spicydatesimulator.xmlparser.SDSGameSave;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -55,7 +56,7 @@ public class MessagingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_messaging);
         dialogListener = new DialogListener();
         try {
-            xmlReader = new InputStreamReader(getAssets().open("game_data.xml"));
+            xmlReader = new InputStreamReader(new FileInputStream(getFilesDir() + "/" + MainMenuActivity.getGameFile(getIntent())));
         } catch (IOException ioe) {
             Log.e("Messaging", ioe + "cannot read");
             finish();

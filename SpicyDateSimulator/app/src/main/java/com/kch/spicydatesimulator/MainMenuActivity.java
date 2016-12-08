@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Pair;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kch.spicydatesimulator.download.MainDownloadTask;
 
@@ -22,7 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     private final ServiceConnection mConn = new ServiceConnection() {
         @Override
@@ -33,6 +35,7 @@ public class MainMenuActivity extends AppCompatActivity {
     };
 
     private static boolean running; // used by MainDownloadTask to make sure activity is still active
+    private static final String GAME_FILE = "GAME_FILE";
     private Intent musicIntent;
     private List<Pair<String,String>> gamesList;
 
@@ -41,23 +44,13 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         running = true;
         setContentView(R.layout.activity_main_menu);
-        final Intent toMessaging = new Intent(this, MessagingActivity.class);
         musicIntent = new Intent(this, MediaService.class);
+
         Button maleStartButton = (Button) findViewById(R.id.male_start_button);
-        maleStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(toMessaging);
-            }
-        });
+        maleStartButton.setOnClickListener(this);
 
         Button femaleStartButton = (Button) findViewById(R.id.female_start_button);
-        femaleStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(toMessaging);
-            }
-        });
+        femaleStartButton.setOnClickListener(this);
         MainDownloadTask t = new MainDownloadTask(this);
         // takes care of loading game files from online and updating the screen
         Executors.newSingleThreadExecutor().submit(t);
@@ -101,22 +94,48 @@ public class MainMenuActivity extends AppCompatActivity {
         this.gamesList = games;
         final Spinner dropDown = (Spinner) findViewById(R.id.gameDropdown);
         final TextView loadingText = (TextView) findViewById(R.id.gameSelectText);
-        if (games.size() > 0) { // if there are games
+        if (games != null && games.size() > 0) { // if there are games
             ArrayAdapter<String> dropDownAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
             for (Pair<String,String> g : games) {
                 dropDownAdapter.add(g.second); // Add game names to adapter
             }
             dropDown.setAdapter(dropDownAdapter);
-            loadingText.setVisibility(View.INVISIBLE);
+            loadingText.setText(R.string.games_ready);
             findViewById(R.id.male_start_button).setEnabled(true);
             findViewById(R.id.female_start_button).setEnabled(true);
         }
         else { // games list is empty, tell the user
             loadingText.setText(R.string.no_games);
+            Toast.makeText(this, R.string.no_games_dialog, Toast.LENGTH_LONG).show();
         }
     }
 
     public boolean isRunning() {
         return running;
+    }
+
+    /**
+     * Click handler for game start buttons
+     * @param view auto passed in
+     */
+    @Override
+    public void onClick(View view) {
+        String selectedGame = ((Spinner) findViewById(R.id.gameDropdown)).getSelectedItem().toString();
+        String gameFile = null;
+        for (Pair<String,String> g : gamesList) {
+            if (g.second.equals(selectedGame)) {
+                gameFile = g.first;
+                break;
+            }
+        }
+        if (gameFile != null) {
+            final Intent toMessaging = new Intent(this, MessagingActivity.class);
+            toMessaging.putExtra(GAME_FILE, gameFile);
+            startActivity(toMessaging);
+        }
+    }
+
+    public static String getGameFile(Intent i) {
+        return i.getStringExtra(GAME_FILE);
     }
 }
