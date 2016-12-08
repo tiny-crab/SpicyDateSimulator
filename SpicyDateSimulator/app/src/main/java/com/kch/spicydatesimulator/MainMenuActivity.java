@@ -3,6 +3,8 @@ package com.kch.spicydatesimulator;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.IBinder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +40,7 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     private static final String GAME_FILE = "GAME_FILE";
     private Intent musicIntent;
     private List<Pair<String,String>> gamesList;
+    Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         running = true;
         setContentView(R.layout.activity_main_menu);
         musicIntent = new Intent(this, MediaService.class);
+
+        res = this.getResources();
 
         Button maleStartButton = (Button) findViewById(R.id.male_start_button);
         maleStartButton.setOnClickListener(this);
@@ -83,6 +88,12 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
     protected void onResume() {
         running = true;
         super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
+        int highscore = sharedPreferences.getInt("highscore", 0);
+        TextView highScore = (TextView) this.findViewById(R.id.highScore);
+        highScore.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        String highscoreString = res.getString(R.string.high_score) + Integer.toString(highscore);
+        highScore.setText(highscoreString);
     }
 
     /**

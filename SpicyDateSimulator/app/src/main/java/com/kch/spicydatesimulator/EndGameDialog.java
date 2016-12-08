@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 public class EndGameDialog extends DialogFragment {
@@ -18,8 +19,10 @@ public class EndGameDialog extends DialogFragment {
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        String message = getActivity().getResources().getString(R.string.end_game_notice)
-                + " You scored " + Integer.toString(score) + " points!";
+        Resources res = getActivity().getResources();
+        String message = res.getString(R.string.end_game_notice)
+                + res.getString(R.string.score_prefix)  + Integer.toString(score)
+                + res.getString(R.string.score_suffix);
         builder.setMessage(message)
                 .setPositiveButton(R.string.end_game_quit, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {

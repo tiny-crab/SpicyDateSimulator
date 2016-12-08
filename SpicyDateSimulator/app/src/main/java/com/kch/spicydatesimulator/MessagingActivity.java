@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,10 +51,13 @@ public class MessagingActivity extends AppCompatActivity {
     MessageListAdapter messageToPush;
     ArrayAdapter<String> choiceToPush;
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
+        sharedPreferences = getSharedPreferences("sharedPreferences", MODE_PRIVATE);
         dialogListener = new DialogListener();
         try {
             xmlReader = new InputStreamReader(new FileInputStream(getFilesDir() + "/" + MainMenuActivity.getGameFile(getIntent())));
@@ -102,6 +106,10 @@ public class MessagingActivity extends AppCompatActivity {
         if(response == null) {
             EndGameDialog dialogBox = new EndGameDialog();
             dialogBox.show(getFragmentManager(), "gameEnded");
+            int highscore = sharedPreferences.getInt("highscore", 0);
+            if (score > highscore) {
+                sharedPreferences.edit().putInt("highscore", score).apply();
+            }
         } else {
             score++;
             messageToPush.add(response);

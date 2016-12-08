@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SimuladorDeFechaPicante</string>
+    <string name="dialog_exit_cancel">¡Sigue jugando!</string>
+    <string name="dialog_exit_confirmation">Salir del juego</string>
+    <string name="dialog_exit_question">¿Seguro que quieres salir? ¡Todo el progreso se perderá!</string>
+    <string name="end_game_again">¡Inténtalo de nuevo!</string>
+    <string name="end_game_notice">¡Perdiste! ¿Juega de nuevo?</string>
+    <string name="end_game_quit">Salir del juego</string>
+    <string name="female_start_button">Hable con una mujer</string>
+    <string name="games_ready">Seleccione un juego</string>
+    <string name="male_start_button">Hable con un hombre</string>
+    <string name="loading">Cargando juegos ...</string>
+    <string name="no_games">¡No se han encontrado juegos!</string>
+    <string name="no_games_dialog">No se encontraron juegos, por favor revise su conexión a Internet</string>
+    <string name="score_prefix">" Has anotado "</string>
+    <string name="score_suffix">" puntos!"</string>
+    <string name="high_score">"Puntuación más alta: "</string>
+</resources>
